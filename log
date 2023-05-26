@@ -1,34 +1,123 @@
-interface ILog
+public static class Logger
 {
-      void LogData(double num);
-}
- 
-//конкретная реализация
-class DBLogger : ILog
-{
-     public void LogData(double num)
+    public enum Level
     {
-       //Logging to database
-      //...
+        DEBUG,
+        INFO,
+        WARN,
+        ERROR,
+        CRIT
     }
-}
- 
-//класс, выполняющий вычисления
-class Calculator
-{
-    ILog log;
-  public Calculator(ILog log)
-   {
-     //установка конкретного типа логирования
-      this.log = log;
-   }
-   public void Total(params double[] arr)
-   {
-     double result = 0;
-     //вычисления
-     //...
- 
-     //выполнение логирования
-     log.LogData(result); 
-   }
+
+    private static  Level _currentLevel;
+    private static string _fileName;
+    private static unsigned int _rotationSizeLimit;
+    private static DateTime _rotationTimeLimit;
+
+    static Logger()
+    {
+        if(/*Файл настроек не существует*/)
+        {
+            throw new Exception();  // Выбрасываем исключение, специфичное для вашего языка
+        }
+        /*Открываем файл на чтение*/
+        string settings = /*Читаем все данные из файла в переменную*/;
+        /*Закрываем файл*/
+        ParseSettings(settings);
+    }
+
+    private static void ParseSettings(string settings)
+    {
+        /*Как-то парсим настройки*/
+        _currentLevel = /*какое-то значение уровня*/;
+        _fileName = /*какое-то имя файла*/;
+        _rotationTimeLimit = /*Какое-то значение*/;
+        _rotationSizeLimit = /*Какое-то значение*/;
+    }
+
+    public static Log(Level level, string message)
+    {
+        Log(level, string message, null);
+    }
+
+    public static Log(Level level, string message, Exception exception)
+    {
+        if(_currentLevel >= level)
+        {
+            if(/*файл _fileName существует*/)
+            {
+                if(IsNeedRotation(/*Указатель на файл*/))
+                {
+                    /*Переименовываем старый файл (если необходимо, либо новый файл должен быть с новым именем)*/
+                    /*Создаём новый файл*/
+                }
+                else
+                {
+                    /*Открываем файл для добавления*/
+                }
+            }
+            else
+            {
+                /*Создаём новый файл*/
+            }
+            /*Пишем в файл строку*/
+            /*Закрываем файл*/
+        }
+    }
+
+    public static IsNeedRotation(/*Указатель на файл*/)
+    {
+        return (_rotationSizeLimit != -1 && /*размер файла*/ >= _rotationSizeLimit) 
+        || (_rotationTimeLimit != null && /*Дата создания файла*/ >= _rotationTimeLimit);
+    }
+
+    public static Debug(string message)
+    {
+        Debug(message, null);
+    }
+
+    public static Debug(string message, Exception exception)
+    {
+        Log(Level.DEBUG, message, exception);
+    }
+
+    public static Info(string message)
+    {
+        Info(message, null);
+    }
+
+    public static Info(string message, Exception exception)
+    {
+        Log(Level.INFO, message, exception);
+    }
+
+    public static Warn(string message)
+    {
+        Warn(message, null);
+    }
+
+    public static Warn(string message, Exception exception)
+    {
+        Log(Level.WARNING, message, exception);
+    }
+
+    public static Error(string message)
+    {
+        Error(message, null);
+    }
+
+    public static Error(string message, Exception exception)
+    {
+        Log(Level.ERROR, message, exception);
+    }
+
+    public static Crit(string message)
+    {
+        Crit(message, null);
+    }
+
+    public static Crit(string message, Exception exception)
+    {
+        Log(Level.Crit, message, exception);
+    }
 }
