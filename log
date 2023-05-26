@@ -1,0 +1,34 @@
+interface ILog
+{
+      void LogData(double num);
+}
+ 
+//конкретная реализация
+class DBLogger : ILog
+{
+     public void LogData(double num)
+    {
+       //Logging to database
+      //...
+    }
+}
+ 
+//класс, выполняющий вычисления
+class Calculator
+{
+    ILog log;
+  public Calculator(ILog log)
+   {
+     //установка конкретного типа логирования
+      this.log = log;
+   }
+   public void Total(params double[] arr)
+   {
+     double result = 0;
+     //вычисления
+     //...
+ 
+     //выполнение логирования
+     log.LogData(result); 
+   }
+}
