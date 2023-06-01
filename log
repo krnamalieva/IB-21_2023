@@ -1,123 +1,47 @@
-public static class Logger
-{
-    public enum Level
-    {
-        DEBUG,
-        INFO,
-        WARN,
-        ERROR,
-        CRIT
-    }
+from abc import abstractmethod
 
-    private static  Level _currentLevel;
-    private static string _fileName;
-    private static unsigned int _rotationSizeLimit;
-    private static DateTime _rotationTimeLimit;
 
-    static Logger()
-    {
-        if(/*Файл настроек не существует*/)
-        {
-            throw new Exception();  // Выбрасываем исключение, специфичное для вашего языка
-        }
-        /*Открываем файл на чтение*/
-        string settings = /*Читаем все данные из файла в переменную*/;
-        /*Закрываем файл*/
-        ParseSettings(settings);
-    }
+class Log:
+    @abstractmethod
+    def Debug(self):
+        pass
 
-    private static void ParseSettings(string settings)
-    {
-        /*Как-то парсим настройки*/
-        _currentLevel = /*какое-то значение уровня*/;
-        _fileName = /*какое-то имя файла*/;
-        _rotationTimeLimit = /*Какое-то значение*/;
-        _rotationSizeLimit = /*Какое-то значение*/;
-    }
+    @abstractmethod
+    def Info(self):
+        pass
 
-    public static Log(Level level, string message)
-    {
-        Log(level, string message, null);
-    }
+    @abstractmethod
+    def Warn(self):
+        pass
 
-    public static Log(Level level, string message, Exception exception)
-    {
-        if(_currentLevel >= level)
-        {
-            if(/*файл _fileName существует*/)
-            {
-                if(IsNeedRotation(/*Указатель на файл*/))
-                {
-                    /*Переименовываем старый файл (если необходимо, либо новый файл должен быть с новым именем)*/
-                    /*Создаём новый файл*/
-                }
-                else
-                {
-                    /*Открываем файл для добавления*/
-                }
-            }
-            else
-            {
-                /*Создаём новый файл*/
-            }
-            /*Пишем в файл строку*/
-            /*Закрываем файл*/
-        }
-    }
+    @abstractmethod
+    def Error(self):
+        pass
 
-    public static IsNeedRotation(/*Указатель на файл*/)
-    {
-        return (_rotationSizeLimit != -1 && /*размер файла*/ >= _rotationSizeLimit) 
-        || (_rotationTimeLimit != null && /*Дата создания файла*/ >= _rotationTimeLimit);
-    }
+    @abstractmethod
+    def Crit(self):
+        pass
 
-    public static Debug(string message)
-    {
-        Debug(message, null);
-    }
+class ConsoleLog(Log):
+    def Debug(self):
+        print("\033[33m {}" .format("Debug"))
 
-    public static Debug(string message, Exception exception)
-    {
-        Log(Level.DEBUG, message, exception);
-    }
+    def Info(self):
+        print("\033[35m {}".format("Info"))
 
-    public static Info(string message)
-    {
-        Info(message, null);
-    }
+    def Warn(self):
+        print("\033[36m {}".format("Warn"))
 
-    public static Info(string message, Exception exception)
-    {
-        Log(Level.INFO, message, exception);
-    }
+    def Error(self):
+        print("\033[31m {}".format("Error"))
 
-    public static Warn(string message)
-    {
-        Warn(message, null);
-    }
+    def Crit(self):
+        print("\033[37m {}".format("Crit"))
 
-    public static Warn(string message, Exception exception)
-    {
-        Log(Level.WARNING, message, exception);
-    }
+test = ConsoleLog()
+test.Debug()
+test.Info()
+test.Warn()
+test.Error()
+test.Crit()
 
-    public static Error(string message)
-    {
-        Error(message, null);
-    }
-
-    public static Error(string message, Exception exception)
-    {
-        Log(Level.ERROR, message, exception);
-    }
-
-    public static Crit(string message)
-    {
-        Crit(message, null);
-    }
-
-    public static Crit(string message, Exception exception)
-    {
-        Log(Level.Crit, message, exception);
-    }
-}
