@@ -57,7 +57,7 @@ class HTMLBuilder:
 
 
 html = HTMLBuilder()
-html.set_title("Test")
+html.set_title("Test1")
 html.add_paragraph("First")
 html.add_link("https://yander.ru", "Нажми")
 html.add_div("fsdfd")
