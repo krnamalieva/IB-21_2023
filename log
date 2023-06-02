@@ -3,45 +3,46 @@ from abc import abstractmethod
 
 class Log:
     @abstractmethod
-    def Debug(self):
-        pass
+    def debug(self, text: str):
+        print("debug: " + text)
 
     @abstractmethod
-    def Info(self):
-        pass
+    def info(self, text: str):
+        print("info: " + text)
 
     @abstractmethod
-    def Warn(self):
-        pass
+    def warn(self, text: str):
+        print("warn: " + text)
 
     @abstractmethod
-    def Error(self):
-        pass
+    def error(self, text: str):
+        print("error: " + text)
 
     @abstractmethod
-    def Crit(self):
-        pass
+    def crit(self, text: str):
+        print("crit: " + text)
+
 
 class ConsoleLog(Log):
-    def Debug(self):
-        print("\033[33m {}" .format("Debug"))
+    def debug(self, text: str):
+        print("\033[32m {}".format(text))
 
-    def Info(self):
-        print("\033[35m {}".format("Info"))
+    def info(self, text: str):
+        print("\033[34m {}" .format(text))
 
-    def Warn(self):
-        print("\033[36m {}".format("Warn"))
+    def warn(self, text: str):
+        print("\033[31m {}" .format(text))
 
-    def Error(self):
-        print("\033[31m {}".format("Error"))
+    def error(self, text: str):
+        print("\033[31m {}" .format(text))
 
-    def Crit(self):
-        print("\033[37m {}".format("Crit"))
+    def crit(self, text: str):
+        print("\033[33m {}" .format(text))
 
-test = ConsoleLog()
-test.Debug()
-test.Info()
-test.Warn()
-test.Error()
-test.Crit()
 
+log = ConsoleLog()
+log.debug("Дебаг")
+log.info("Полезная информация")
+log.warn("Предупреждение!")
+log.error("Ошибка!")
+log.crit("Критическая ошибка!")
